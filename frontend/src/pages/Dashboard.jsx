@@ -107,9 +107,12 @@ export default function Dashboard() {
   today.setHours(0, 0, 0, 0);
   const copilotExpiry = (() => {
     if (!copilotExpiryDate) return null;
-    const dateParts = copilotExpiryDate.split("-").map(Number);
-    if (dateParts.length !== 3 || dateParts.some((part) => Number.isNaN(part))) return null;
-    const [year, month, day] = dateParts;
+    const match = copilotExpiryDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return null;
+    const [, yearPart, monthPart, dayPart] = match;
+    const year = Number(yearPart);
+    const month = Number(monthPart);
+    const day = Number(dayPart);
     const parsedDate = new Date(year, month - 1, day);
     if (
       parsedDate.getFullYear() !== year ||
