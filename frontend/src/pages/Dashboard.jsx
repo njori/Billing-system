@@ -105,7 +105,12 @@ export default function Dashboard() {
   const totalServices = servicesData.reduce((sum, cat) => sum + cat.services.length, 0);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const copilotExpiry = copilotExpiryDate ? new Date(`${copilotExpiryDate}T00:00:00`) : null;
+  const copilotExpiry = copilotExpiryDate
+    ? (() => {
+        const [year, month, day] = copilotExpiryDate.split("-").map(Number);
+        return new Date(year, month - 1, day);
+      })()
+    : null;
   const isCopilotExpired = copilotExpiry ? copilotExpiry < today : null;
 
   return (
