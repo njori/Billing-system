@@ -105,12 +105,21 @@ export default function Dashboard() {
   const totalServices = servicesData.reduce((sum, cat) => sum + cat.services.length, 0);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const copilotExpiry = copilotExpiryDate
-    ? (() => {
-        const [year, month, day] = copilotExpiryDate.split("-").map(Number);
-        return new Date(year, month - 1, day);
-      })()
-    : null;
+  const copilotExpiry = (() => {
+    if (!copilotExpiryDate) return null;
+    const dateParts = copilotExpiryDate.split("-").map(Number);
+    if (dateParts.length !== 3 || dateParts.some((part) => Number.isNaN(part))) return null;
+    const [year, month, day] = dateParts;
+    const parsedDate = new Date(year, month - 1, day);
+    if (
+      parsedDate.getFullYear() !== year ||
+      parsedDate.getMonth() !== month - 1 ||
+      parsedDate.getDate() !== day
+    ) {
+      return null;
+    }
+    return parsedDate;
+  })();
   const isCopilotExpired = copilotExpiry ? copilotExpiry < today : null;
 
   return (
@@ -137,7 +146,9 @@ export default function Dashboard() {
           style={{ padding: 8, marginBottom: 10 }}
         />
         <div>
-          {copilotExpiryDate
+          {copilotExpiryDate && !copilotExpiry
+            ? "Please enter a valid expiry date."
+            : copilotExpiryDate
             ? isCopilotExpired
               ? "Yes — your Copilot Student plan has expired."
               : "No — your Copilot Student plan is still active."
