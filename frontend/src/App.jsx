@@ -7,32 +7,7 @@ import Services from "./pages/Services.jsx";
 import Invoices from "./pages/Invoices.jsx";
 import Payments from "./pages/Payments.jsx";
 
-const initialPatients = [
-  {
-    id: "p1",
-    name: "Jane Doe",
-    phone: "555-0100",
-    email: "jane.doe@email.com",
-    address: "123 Oak Street, Springfield, IL 62701",
-    insuranceCompany: "HealthCare Plus",
-    policyNumber: "HCP-789456",
-  },
-  {
-    id: "p2",
-    name: "John Smith",
-    phone: "555-0142",
-    email: "john.smith@email.com",
-    address: "456 Elm Avenue, Springfield, IL 62702",
-    insuranceCompany: "MediCare Solutions",
-    policyNumber: "MCS-123456",
-  },
-];
 
-const initialServices = [
-  { id: "s1", name: "Consultation", price: 50 },
-  { id: "s2", name: "X-Ray", price: 120 },
-  { id: "s3", name: "Blood Test", price: 35 },
-];
 
 export default function App() {
   const [patients, setPatients] = useState([]);
