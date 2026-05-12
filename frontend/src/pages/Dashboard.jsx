@@ -96,17 +96,49 @@ const servicesData = [
 
 export default function Dashboard() {
   const [expandedCategory, setExpandedCategory] = useState(null);
+  const [copilotExpiryDate, setCopilotExpiryDate] = useState("");
 
   const toggleCategory = (category) => {
     setExpandedCategory(expandedCategory === category ? null : category);
   };
 
   const totalServices = servicesData.reduce((sum, cat) => sum + cat.services.length, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const copilotExpiry = copilotExpiryDate ? new Date(`${copilotExpiryDate}T00:00:00`) : null;
+  const isCopilotExpired = copilotExpiry ? copilotExpiry < today : null;
 
   return (
     <div style={{ padding: "20px" }}>
       <h1 style={{ color: "#2c3e50", marginBottom: 20 }}>Hospital Services Dashboard</h1>
-    
+      <div
+        style={{
+          marginBottom: 20,
+          padding: 16,
+          borderRadius: 8,
+          border: "1px solid #ddd",
+          backgroundColor: "#f9fafb",
+        }}
+      >
+        <h2 style={{ marginTop: 0 }}>Copilot Student Status Checker</h2>
+        <label htmlFor="copilot-expiry-date" style={{ display: "block", marginBottom: 8 }}>
+          Copilot Student expiry date:
+        </label>
+        <input
+          id="copilot-expiry-date"
+          type="date"
+          value={copilotExpiryDate}
+          onChange={(e) => setCopilotExpiryDate(e.target.value)}
+          style={{ padding: 8, marginBottom: 10 }}
+        />
+        <div>
+          {copilotExpiryDate
+            ? isCopilotExpired
+              ? "Yes — your Copilot Student plan has expired."
+              : "No — your Copilot Student plan is still active."
+            : "Add your expiry date to check whether your Copilot Student plan has expired."}
+        </div>
+      </div>
 
       <div
         style={{
